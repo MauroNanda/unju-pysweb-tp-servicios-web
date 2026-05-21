@@ -4,27 +4,32 @@
       <div class="card-body">
         <h2 class="card-title text-center mb-4">Conversor de Divisas</h2>
 
-        <div class="mb-3">
-          <label class="form-label">Cantidad</label>
-          <input type="number" class="form-control" [(ngModel)]="cantidad" min="0.01" step="0.01" />
-        </div>
-
-        <div class="row g-2">
+        <div class="row g-3 mt-1">
           <div class="col-12 col-md-6">
-            <label class="form-label">De</label>
-            <select class="form-select" [(ngModel)]="origen">
+            <label class="form-label">Moneda Origen</label>
+            <select class="form-select mb-2" [(ngModel)]="origen">
               @for (m of monedas; track m) {
                 <option [value]="m">{{ m }}</option>
               }
             </select>
+            <label class="form-label">Monto Origen</label>
+            <input type="number" class="form-control" [(ngModel)]="cantidad" min="0.01" step="0.01" />
           </div>
           <div class="col-12 col-md-6">
-            <label class="form-label">A</label>
-            <select class="form-select" [(ngModel)]="destino">
+            <label class="form-label">Moneda Destino</label>
+            <select class="form-select mb-2" [(ngModel)]="destino">
               @for (m of monedas; track m) {
                 <option [value]="m">{{ m }}</option>
               }
             </select>
+            <label class="form-label">Monto Destino (Resultado)</label>
+            <input
+              type="text"
+              class="form-control"
+              [value]="resultado !== null && !loading ? (resultado | number: '1.2-4') : ''"
+              readonly
+              placeholder="Resultado..."
+            />
           </div>
         </div>
 
@@ -38,13 +43,6 @@
 
         @if (error) {
           <div class="alert alert-danger mt-3">{{ error }}</div>
-        }
-
-        @if (resultado !== null && !loading) {
-          <div class="alert alert-success mt-3 text-center">
-            <strong>{{ cantidad }} {{ origen }}</strong> =
-            <strong class="fs-4">{{ resultado | number: '1.2-4' }} {{ destino }}</strong>
-          </div>
         }
       </div>
     </div>
