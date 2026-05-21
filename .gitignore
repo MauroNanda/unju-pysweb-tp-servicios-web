@@ -1,0 +1,22 @@
+# Angular project
+tp-webservice-6144/node_modules/
+tp-webservice-6144/dist/
+tp-webservice-6144/.angular/
+
+# API keys — NUNCA al repo
+tp-webservice-6144/src/environments/environment.ts
+tp-webservice-6144/src/environments/environment.development.ts
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Antigravity CLI internal
+.antigravitycli/
+.agents/
+PLAN-TP-WEBSERVICE.md
+
+# LobeHub credentials
+.lobehub-market/
