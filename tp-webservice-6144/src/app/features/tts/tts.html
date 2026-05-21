@@ -1,1 +1,49 @@
-<p>tts works!</p>
+<div class="row justify-content-center">
+  <div class="col-12 col-lg-8">
+    <h1 class="mb-4">Text-to-Speech</h1>
+
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <div class="mb-3">
+          <label class="form-label">Texto a convertir (máx. 300 caracteres)</label>
+          <textarea
+            class="form-control"
+            rows="4"
+            maxlength="300"
+            [(ngModel)]="texto"
+            placeholder="Escribí acá lo que querés escuchar…"
+          ></textarea>
+          <small class="text-muted">{{ texto.length }}/300</small>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Voz</label>
+          <select class="form-select" [(ngModel)]="voz">
+            @for (v of voces; track v.id) {
+              <option [value]="v.id">{{ v.label }}</option>
+            }
+          </select>
+        </div>
+
+        <button
+          class="btn btn-primary w-100"
+          (click)="convertir()"
+          [disabled]="!formValido || loading"
+        >
+          {{ loading ? 'Generando audio…' : 'Convertir a audio' }}
+        </button>
+
+        @if (error) {
+          <div class="alert alert-danger mt-3">{{ error }}</div>
+        }
+
+        @if (audioUrl) {
+          <div class="mt-4">
+            <label class="form-label fw-bold">Resultado:</label>
+            <audio [src]="audioUrl" controls class="w-100"></audio>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>
