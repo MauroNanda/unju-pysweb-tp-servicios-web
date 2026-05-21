@@ -24,7 +24,7 @@ export class AutosService {
       // Devolvemos el cache como Observable para no romper el contrato del consumer
       return of(this.cacheMarcas);
     }
-    return this.http.get<Marca[]>(`https://${this.host}/brands`, { headers: this.headers }).pipe(
+    return this.http.get<Marca[]>(`https://${this.host}/v2/cars/makes`, { headers: this.headers }).pipe(
       tap((data) => (this.cacheMarcas = data)),
       catchError((err: HttpErrorResponse) => this.handleError(err)),
     );
@@ -36,7 +36,7 @@ export class AutosService {
       return of(cached);
     }
     return this.http
-      .get<Modelo[]>(`https://${this.host}/brands/${brandId}/models`, { headers: this.headers })
+      .get<Modelo[]>(`https://${this.host}/v2/cars/makes/${brandId}/models`, { headers: this.headers })
       .pipe(
         tap((data) => this.cacheModelos.set(brandId, data)),
         catchError((err: HttpErrorResponse) => this.handleError(err)),

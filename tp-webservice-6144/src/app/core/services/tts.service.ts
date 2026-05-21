@@ -25,8 +25,15 @@ export class TtsService {
    * responseType: 'blob' es CLAVE — sin esto Angular intenta parsear como JSON y rompe.
    */
   textoAAudio(req: TtsRequest): Observable<Blob> {
+    const payload = {
+      model: 'tts-1',
+      input: req.text,
+      instructions: 'Speak clearly and naturally.',
+      voice: req.voice,
+    };
+
     return this.http
-      .post(`https://${this.host}/`, req, {
+      .post(`https://${this.host}/`, payload, {
         headers: this.headers,
         responseType: 'blob',
       })
