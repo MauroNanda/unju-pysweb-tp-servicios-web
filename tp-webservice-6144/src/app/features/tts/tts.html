@@ -1,24 +1,27 @@
 <div class="row justify-content-center">
   <div class="col-12 col-lg-8">
-    <h1 class="mb-4">Text-to-Speech</h1>
+    <h2 class="mb-5 text-center fw-bold">Text-to-Speech</h2>
 
-    <div class="card shadow-sm">
-      <div class="card-body">
-        <div class="mb-3">
-          <label class="form-label">Texto a convertir (máx. 300 caracteres)</label>
+    <div class="card shadow-sm border-0 rounded-4">
+      <div class="card-body p-4 p-md-5">
+        <div class="mb-4">
+          <label class="form-label text-muted fw-semibold small text-uppercase">Texto a convertir (máx. 300 caracteres)</label>
           <textarea
-            class="form-control"
+            class="form-control rounded-4 shadow-sm border-0 bg-body-tertiary p-3"
             rows="4"
             maxlength="300"
             [(ngModel)]="texto"
             placeholder="Escribí acá lo que querés escuchar…"
+            style="resize: none;"
           ></textarea>
-          <small class="text-muted">{{ texto.length }}/300</small>
+          <div class="text-end mt-1">
+            <small class="text-muted">{{ texto.length }}/300</small>
+          </div>
         </div>
 
-        <div class="mb-3">
-          <label class="form-label">Voz</label>
-          <select class="form-select" [(ngModel)]="voz">
+        <div class="mb-5">
+          <label class="form-label text-muted fw-semibold small text-uppercase">Voz</label>
+          <select class="form-select form-select-lg rounded-pill shadow-sm border-0 bg-body-tertiary px-4" [(ngModel)]="voz">
             @for (v of voces; track v.id) {
               <option [value]="v.id">{{ v.label }}</option>
             }
@@ -26,7 +29,7 @@
         </div>
 
         <button
-          class="btn btn-primary w-100"
+          class="btn btn-primary btn-lg w-100 rounded-pill shadow-sm fw-bold"
           (click)="convertir()"
           [disabled]="!formValido || loading"
         >
@@ -38,9 +41,9 @@
         }
 
         @if (audioUrl) {
-          <div class="mt-4">
-            <label class="form-label fw-bold">Resultado:</label>
-            <audio [src]="audioUrl" controls class="w-100"></audio>
+          <div class="mt-5 p-4 bg-body-tertiary rounded-4 text-center">
+            <label class="form-label text-muted fw-semibold small text-uppercase d-block mb-3">Resultado Generado</label>
+            <audio [src]="audioUrl" controls class="w-100 rounded-pill shadow-sm"></audio>
           </div>
         }
       </div>
