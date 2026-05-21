@@ -39,28 +39,9 @@ Trabajo práctico de la materia Programación y Servicios Web (PySW). Este proye
    - Selector de nivel de corrección de errores y tamaño.
    - Generación dinámica del atributo source de una etiqueta <img>, con opción para descarga directa del PNG.
 
-## Configuración
+## Configuración y Ejecución
 
-Para correr el proyecto localmente, es necesario configurar las claves de acceso para las APIs.
-
-1. Verifica los archivos `environment.ts` y `environment.development.ts` dentro de `src/environments/`.
-2. Asegúrate de registrar las credenciales correctas en tu entorno local:
-
-```typescript
-export const environment = {
-  production: false,
-  rapidApiKey: 'TU_CLAVE',
-  apiLayerKey: 'TU_CLAVE',
-  rapidApiHosts: {
-    peliculas: 'imdb-top-100-movies.p.rapidapi.com',
-    autos: 'car-specs.p.rapidapi.com',
-    tts: 'open-ai-text-to-speech1.p.rapidapi.com',
-  },
-  qrApiBase: 'https://api.qrserver.com/v1/create-qr-code/',
-};
-```
-
-## Uso
+Para facilitar la revisión y evaluación por parte del docente, las claves de las APIs (`environment.ts` y `environment.development.ts`) **han sido incluidas en el repositorio**. No es necesario realizar configuraciones adicionales.
 
 Ejecuta estos comandos dentro del directorio del proyecto (`tp-webservice-6144`):
 
