@@ -1,7 +1,7 @@
 <section class="bg-dark text-light py-5 mb-4 rounded-3 text-center">
   <h1 class="display-5 fw-bold">Portal de Películas</h1>
   <p class="lead">Top 100 películas según IMDB</p>
-  <button class="btn btn-warning btn-lg" (click)="scrollToGrid()">EXPLORAR ESTRENOS</button>
+  <button class="btn btn-warning btn-lg" (click)="scrollToGrid()">EXPLORAR TOP 100</button>
 </section>
 
 @if (loading) {
@@ -25,20 +25,29 @@
 
 @if (!loading && !error && peliculas.length > 0) {
   <div id="grid-peliculas">
-    <div class="row mb-5">
-      <div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
-        <div class="d-flex align-items-center bg-body border rounded-pill shadow-sm px-3 py-2">
+    <div class="row mb-5 justify-content-center">
+      <div class="col-12 col-md-6 col-lg-5 mb-3 mb-md-0">
+        <div class="d-flex align-items-center bg-body border rounded-pill shadow-sm px-3 py-2 h-100">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="text-muted ms-2 me-3" viewBox="0 0 16 16">
             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
           </svg>
           <input
             type="search"
             class="form-control border-0 shadow-none bg-transparent"
-            placeholder="Buscar película por título o año..."
+            placeholder="Buscar película..."
             [(ngModel)]="searchTerm"
             style="outline: none;"
           />
         </div>
+      </div>
+      <div class="col-12 col-md-4 col-lg-3">
+        <select class="form-select form-select-lg border rounded-pill shadow-sm bg-body h-100" [(ngModel)]="sortBy">
+          <option value="rank">Ranking (Top 100)</option>
+          <option value="yearDesc">Más recientes</option>
+          <option value="yearAsc">Más antiguas</option>
+          <option value="titleAsc">Título (A - Z)</option>
+          <option value="titleDesc">Título (Z - A)</option>
+        </select>
       </div>
     </div>
 

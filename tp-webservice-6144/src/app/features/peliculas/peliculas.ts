@@ -16,17 +16,37 @@ export class Peliculas implements OnInit {
 
   peliculas: Pelicula[] = [];
   searchTerm = '';
+  sortBy = 'rank';
   loading = false;
   error: string | null = null;
 
   get filteredPeliculas(): Pelicula[] {
-    if (!this.searchTerm.trim()) {
-      return this.peliculas;
+    let result = this.peliculas;
+    
+    // 1. Filtrar
+    if (this.searchTerm.trim()) {
+      const term = this.searchTerm.toLowerCase();
+      result = result.filter(
+        (p) => p.title.toLowerCase().includes(term) || p.year?.toString().includes(term)
+      );
     }
-    const term = this.searchTerm.toLowerCase();
-    return this.peliculas.filter(
-      (p) => p.title.toLowerCase().includes(term) || p.year?.toString().includes(term)
-    );
+    
+    // 2. Ordenar
+    return result.slice().sort((a, b) => {
+      switch (this.sortBy) {
+        case 'yearDesc':
+          return b.year - a.year;
+        case 'yearAsc':
+          return a.year - b.year;
+        case 'titleAsc':
+          return a.title.localeCompare(b.title);
+        case 'titleDesc':
+          return b.title.localeCompare(a.title);
+        case 'rank':
+        default:
+          return a.rank - b.rank;
+      }
+    });
   }
 
   // Paleta fija para badges de géneros (cíclica)
