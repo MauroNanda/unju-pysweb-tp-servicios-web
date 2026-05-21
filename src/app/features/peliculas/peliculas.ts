@@ -91,4 +91,12 @@ export class Peliculas implements OnInit {
   scrollToGrid(): void {
     document.getElementById('grid-peliculas')?.scrollIntoView({ behavior: 'smooth' });
   }
+
+  handleImageError(event: Event, title: string): void {
+    const img = event.target as HTMLImageElement;
+    // Prevenir bucle infinito si la imagen de fallback también falla
+    if (!img.src.includes('ui-avatars')) {
+      img.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(title)}&background=random&color=fff&size=512`;
+    }
+  }
 }
