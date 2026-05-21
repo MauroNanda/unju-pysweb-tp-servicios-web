@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, of, tap, throwError } from 'rxjs';
+import { Observable, catchError, map, of, tap, throwError } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { Marca, Modelo } from '../models/auto.model';
@@ -25,6 +25,12 @@ export class AutosService {
       return of(this.cacheMarcas);
     }
     return this.http.get<Marca[]>(`https://${this.host}/v2/cars/makes`, { headers: this.headers }).pipe(
+      map((marcas) =>
+        marcas.map((m) => ({
+          ...m,
+          logo: `https://ui-avatars.com/api/?name=${encodeURIComponent(m.name)}&background=random&color=fff&size=200`,
+        }))
+      ),
       tap((data) => (this.cacheMarcas = data)),
       catchError((err: HttpErrorResponse) => this.handleError(err)),
     );
