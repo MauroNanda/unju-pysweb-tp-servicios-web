@@ -35,16 +35,19 @@
 }
 
 /* Skeleton Loading */
-@keyframes skeleton-loading {
+@keyframes skeleton-loading-light {
   0% { background-color: hsl(200, 20%, 80%); }
   100% { background-color: hsl(200, 20%, 95%); }
 }
-[data-bs-theme="dark"] @keyframes skeleton-loading {
+@keyframes skeleton-loading-dark {
   0% { background-color: hsl(200, 20%, 20%); }
   100% { background-color: hsl(200, 20%, 30%); }
 }
 
 .skeleton-box {
-  animation: skeleton-loading 1s linear infinite alternate;
+  animation: skeleton-loading-light 1s linear infinite alternate;
   border-radius: 0.25rem;
+}
+[data-bs-theme="dark"] .skeleton-box {
+  animation: skeleton-loading-dark 1s linear infinite alternate;
 }
