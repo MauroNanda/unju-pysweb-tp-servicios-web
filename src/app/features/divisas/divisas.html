@@ -13,7 +13,10 @@
               }
             </select>
             <label class="form-label text-secondary">Monto Origen</label>
-            <input type="number" class="form-control" [(ngModel)]="cantidad" min="0.01" step="0.01" />
+            <input type="number" class="form-control" [(ngModel)]="cantidad" min="0.01" max="1000000000000" step="0.01" />
+            @if (cantidad > 1000000000000) {
+              <small class="text-danger mt-1 d-block">El monto es demasiado grande.</small>
+            }
           </div>
           <div class="col-12 col-md-6">
             <label class="form-label text-secondary">Moneda Destino</label>

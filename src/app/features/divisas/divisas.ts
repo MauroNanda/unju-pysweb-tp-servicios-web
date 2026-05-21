@@ -25,7 +25,7 @@ export class Divisas {
   error: string | null = null;
 
   get formValido(): boolean {
-    return this.cantidad > 0 && !!this.origen && !!this.destino && this.origen !== this.destino;
+    return this.cantidad > 0 && this.cantidad <= 1000000000000 && !!this.origen && !!this.destino && this.origen !== this.destino;
   }
 
   convertir(): void {
