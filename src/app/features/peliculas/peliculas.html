@@ -1,0 +1,81 @@
+<section class="bg-dark text-light py-5 mb-4 rounded-3 text-center">
+  <h1 class="display-5 fw-bold">Portal de Películas</h1>
+  <p class="lead">Top 100 películas según IMDB</p>
+  <button class="btn btn-warning btn-lg" (click)="scrollToGrid()">EXPLORAR TOP 100</button>
+</section>
+
+@if (loading) {
+  <div class="text-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+  </div>
+}
+
+@if (error && !loading) {
+  <div class="alert alert-danger d-flex justify-content-between">
+    <span>{{ error }}</span>
+    <button class="btn btn-sm btn-outline-danger" (click)="cargar()">Reintentar</button>
+  </div>
+}
+
+@if (!loading && !error && peliculas.length === 0) {
+  <div class="alert alert-info">No hay películas disponibles.</div>
+}
+
+@if (!loading && !error && peliculas.length > 0) {
+  <div id="grid-peliculas">
+    <div class="row mb-5 justify-content-center">
+      <div class="col-12 col-md-6 col-lg-5 mb-3 mb-md-0">
+        <div class="d-flex align-items-center bg-body border rounded-pill shadow-sm px-3 py-2 h-100">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="text-muted ms-2 me-3" viewBox="0 0 16 16">
+            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+          </svg>
+          <input
+            type="search"
+            class="form-control border-0 shadow-none bg-transparent"
+            placeholder="Buscar película..."
+            [(ngModel)]="searchTerm"
+            style="outline: none;"
+          />
+        </div>
+      </div>
+      <div class="col-12 col-md-4 col-lg-4">
+        <div class="d-flex align-items-center bg-body border rounded-pill shadow-sm px-3 py-2 h-100">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="text-muted ms-2 me-2" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M10.082 5.629 9.664 7H8.598l1.789-5.332h1.234L13.402 7h-1.12l-.419-1.371h-1.781zm1.57-.785L11 2.687h-.047l-.652 2.157h1.351z"/>
+            <path d="M12.96 14H8.5v-1.299h2.853v-.047H8.5V11.36h4.46v1.256h-2.845v.047H13v1.337zM4.5 2.5a.5.5 0 0 0-1 0v9.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L4.5 12.293V2.5z"/>
+          </svg>
+          <select class="form-select border-0 shadow-none bg-transparent ps-2 pe-4" [(ngModel)]="sortBy" style="outline: none; cursor: pointer;">
+            <option value="rank">Ranking (Top 100)</option>
+            <option value="yearDesc">Más recientes</option>
+            <option value="yearAsc">Más antiguas</option>
+            <option value="titleAsc">Título (A - Z)</option>
+            <option value="titleDesc">Título (Z - A)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      @for (p of filteredPeliculas; track p.id) {
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm">
+          <img [src]="p.big_image || p.image" [alt]="p.title" class="card-img-top" loading="lazy" />
+          <div class="card-body">
+            <h5 class="card-title">
+              {{ p.title }} <small class="text-muted">({{ p.year }})</small>
+            </h5>
+            <p class="card-text">{{ truncar(p.description) }}</p>
+            <div class="d-flex flex-wrap gap-1">
+              @for (g of p.genre; track g) {
+                <span class="badge" [ngClass]="colorBadge(g)">{{ g }}</span>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+    </div>
+  </div>
+}
