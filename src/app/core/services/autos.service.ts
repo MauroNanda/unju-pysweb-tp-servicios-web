@@ -15,13 +15,11 @@ export class AutosService {
     'X-RapidAPI-Host': this.host,
   });
 
-  // Caché en memoria: clave = brandId, valor = modelos ya descargados
   private readonly cacheModelos = new Map<string, Modelo[]>();
   private cacheMarcas: Marca[] | null = null;
 
   getMarcas(): Observable<Marca[]> {
     if (this.cacheMarcas) {
-      // Devolvemos el cache como Observable para no romper el contrato del consumer
       return of(this.cacheMarcas);
     }
     return this.http.get<Marca[]>(`https://${this.host}/v2/cars/makes`, { headers: this.headers }).pipe(

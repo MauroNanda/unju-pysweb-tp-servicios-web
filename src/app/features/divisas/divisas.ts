@@ -13,7 +13,6 @@ import { DivisasService } from '../../core/services/divisas.service';
 export class Divisas {
   private readonly divisasService = inject(DivisasService);
 
-  // Lista cerrada — alcanza para la consigna. Se puede expandir.
   readonly monedas = ['USD', 'EUR', 'ARS', 'BRL', 'CLP', 'UYU', 'GBP', 'JPY', 'MXN'];
 
   cantidad = 1;

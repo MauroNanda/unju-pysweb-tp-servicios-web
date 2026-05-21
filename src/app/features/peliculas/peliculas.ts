@@ -23,7 +23,6 @@ export class Peliculas implements OnInit {
   get filteredPeliculas(): Pelicula[] {
     let result = this.peliculas;
     
-    // 1. Filtrar
     if (this.searchTerm.trim()) {
       const term = this.searchTerm.toLowerCase();
       result = result.filter(
@@ -31,7 +30,6 @@ export class Peliculas implements OnInit {
       );
     }
     
-    // 2. Ordenar
     return result.slice().sort((a, b) => {
       switch (this.sortBy) {
         case 'yearDesc':
@@ -49,7 +47,6 @@ export class Peliculas implements OnInit {
     });
   }
 
-  // Paleta fija para badges de géneros (cíclica)
   private readonly badgeColors = [
     'bg-primary',
     'bg-success',
@@ -83,7 +80,6 @@ export class Peliculas implements OnInit {
   }
 
   colorBadge(genero: string): string {
-    // Hash determinístico para que el mismo género siempre tenga el mismo color
     const idx = [...genero].reduce((acc, c) => acc + c.charCodeAt(0), 0) % this.badgeColors.length;
     return this.badgeColors[idx];
   }
@@ -94,7 +90,6 @@ export class Peliculas implements OnInit {
 
   handleImageError(event: Event, title: string): void {
     const img = event.target as HTMLImageElement;
-    // Prevenir bucle infinito si la imagen de fallback también falla
     if (!img.src.includes('ui-avatars')) {
       img.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(title)}&background=random&color=fff&size=512`;
     }

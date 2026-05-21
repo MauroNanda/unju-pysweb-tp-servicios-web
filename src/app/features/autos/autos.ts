@@ -31,8 +31,6 @@ export class Autos implements OnInit, AfterViewInit {
   loadingModelos = false;
   error: string | null = null;
 
-  // Referencia al modal Bootstrap nativo (cargado por el bundle global)
-  // @ts-ignore — bootstrap está en window por estar en angular.json > scripts
   private modal: any;
 
   ngOnInit(): void {
@@ -40,7 +38,6 @@ export class Autos implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // @ts-ignore — bootstrap viene del script global
     const bs = (window as any)['bootstrap'];
     const el = document.getElementById('modalModelos');
     if (bs && el) {
