@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, OnInit, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { Marca, Modelo } from '../../core/models/auto.model';
 import { AutosService } from '../../core/services/autos.service';
@@ -7,7 +8,7 @@ import { AutosService } from '../../core/services/autos.service';
 @Component({
   selector: 'app-autos',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './autos.html',
 })
 export class Autos implements OnInit, AfterViewInit {
@@ -16,6 +17,15 @@ export class Autos implements OnInit, AfterViewInit {
   marcas: Marca[] = [];
   modelos: Modelo[] = [];
   marcaSeleccionada: Marca | null = null;
+  searchTerm = '';
+
+  get filteredMarcas(): Marca[] {
+    if (!this.searchTerm.trim()) {
+      return this.marcas;
+    }
+    const term = this.searchTerm.toLowerCase();
+    return this.marcas.filter((m) => m.name.toLowerCase().includes(term));
+  }
 
   loadingMarcas = false;
   loadingModelos = false;

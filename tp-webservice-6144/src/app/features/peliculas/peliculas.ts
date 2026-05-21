@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { Pelicula } from '../../core/models/pelicula.model';
 import { PeliculasService } from '../../core/services/peliculas.service';
@@ -7,15 +8,26 @@ import { PeliculasService } from '../../core/services/peliculas.service';
 @Component({
   selector: 'app-peliculas',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './peliculas.html',
 })
 export class Peliculas implements OnInit {
   private readonly peliculasService = inject(PeliculasService);
 
   peliculas: Pelicula[] = [];
+  searchTerm = '';
   loading = false;
   error: string | null = null;
+
+  get filteredPeliculas(): Pelicula[] {
+    if (!this.searchTerm.trim()) {
+      return this.peliculas;
+    }
+    const term = this.searchTerm.toLowerCase();
+    return this.peliculas.filter(
+      (p) => p.title.toLowerCase().includes(term) || p.year?.toString().includes(term)
+    );
+  }
 
   // Paleta fija para badges de géneros (cíclica)
   private readonly badgeColors = [
