@@ -12,7 +12,14 @@
         <div class="row g-3 mb-3">
           <div class="col-12 col-md-6">
             <label class="form-label">Tamaño: {{ size }} px</label>
-            <input type="range" class="form-range" min="100" max="500" step="50" [(ngModel)]="size" />
+            <input
+              type="range"
+              class="form-range"
+              min="100"
+              max="500"
+              step="50"
+              [(ngModel)]="size"
+            />
           </div>
           <div class="col-12 col-md-6">
             <label class="form-label">Corrección de errores</label>

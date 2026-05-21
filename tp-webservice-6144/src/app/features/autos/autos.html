@@ -15,7 +15,12 @@
     @for (m of marcas; track m.id) {
       <div class="col-6 col-md-4 col-lg-3">
         <div class="card h-100 text-center shadow-sm" role="button" (click)="abrirModal(m)">
-          <img [src]="m.logo" [alt]="m.name" class="card-img-top p-3" style="height: 140px; object-fit: contain;" />
+          <img
+            [src]="m.logo"
+            [alt]="m.name"
+            class="card-img-top p-3"
+            style="height: 140px; object-fit: contain"
+          />
           <div class="card-body">
             <h5 class="card-title">{{ m.name }}</h5>
           </div>
@@ -31,7 +36,12 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Modelos de {{ marcaSeleccionada?.name }}</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Cerrar"
+        ></button>
       </div>
       <div class="modal-body">
         @if (loadingModelos) {
@@ -49,9 +59,7 @@
                 }
               </li>
             } @empty {
-              <li class="list-group-item text-muted">
-                No hay modelos para esta marca.
-              </li>
+              <li class="list-group-item text-muted">No hay modelos para esta marca.</li>
             }
           </ul>
         }

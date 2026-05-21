@@ -1,59 +1,77 @@
-# TpWebservice6144
+# TP Web Services — Angular 21
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.9.
+Trabajo práctico de la materia **Programación y Servicios Web (PySW)**. Este proyecto es una Single Page Application (SPA) responsiva que consume e integra cinco APIs REST públicas utilizando características modernas de Angular 21.
 
-## Development server
+## 🛠️ Stack Tecnológico
 
-To start a local development server, run:
+*   **Framework:** Angular 21 (Standalone Components, sin `NgModule`)
+*   **Manejo de Estados:** Angular Signals & RxJS
+*   **Estilos:** Bootstrap 5 (Navbar responsivo, Grid, Cards y Modales)
+*   **HTTP Client:** `provideHttpClient(withFetch())` (API Fetch nativa)
+*   **Tipado:** TypeScript 5.x estricto
+
+---
+
+## 🚀 Características y APIs implementadas
+
+1.  **Punto A · Portal de Películas (IMDb Top 100):**
+    *   Consume la API de IMDb Top 100 de RapidAPI.
+    *   Grid responsivo con cards que muestran año, géneros (badges de color determinístico) y descripción truncada.
+    *   Manejo de estados (loading spinner, error alert y empty states).
+2.  **Punto B · Card Maker — Marcas de Autos:**
+    *   Grid de marcas que abre un modal con la lista de modelos.
+    *   **Caché local en memoria** (`Map<string, Modelo[]>`) para prevenir llamadas redundantes al reabrir una marca.
+3.  **Punto C · Conversor de Divisas:**
+    *   Formulario interactivo para conversiones entre múltiples divisas.
+    *   Consume la API `currency_data` de APILayer.
+    *   Validaciones estrictas y formato con pipe de números (`number: '1.2-4'`).
+4.  **Punto D · Text-to-Speech (TTS):**
+    *   Conversión de texto a voz mediante la API OpenAI TTS en RapidAPI.
+    *   Manejo de audio binario (`Blob` y `URL.createObjectURL`) reproducido mediante control `<audio>` nativo.
+    *   Control estricto de pérdidas de memoria con `URL.revokeObjectURL`.
+5.  **Punto E · Generador de Códigos QR:**
+    *   Generador visual a través del servicio gratuito `goqr.me`.
+    *   Nivel de corrección y tamaño adaptables.
+    *   Botón para descargar directamente la imagen en formato PNG.
+
+---
+
+## 🔑 Configuración de las API Keys
+
+Por motivos de seguridad, las claves de las APIs no se registran en el repositorio Git (están ignoradas en `.gitignore`).
+
+Para correr el proyecto localmente:
+
+1.  Crea una copia de `src/environments/environment.example.ts` con el nombre `environment.ts` y `environment.development.ts` dentro de `src/environments/` (si no están ya creados).
+2.  Registra tus credenciales reales:
+    ```typescript
+    export const environment = {
+      production: false,
+      rapidApiKey: 'TU_RAPIDAPI_KEY_AQUI',   // Obtener de rapidapi.com
+      apiLayerKey: 'TU_APILAYER_KEY_AQUI',   // Obtener de apilayer.com
+      ...
+    };
+    ```
+
+---
+
+## 💻 Comandos Útiles
+
+Ejecuta estos comandos dentro del directorio del proyecto (`tp-webservice-6144`):
 
 ```bash
-ng serve
+# Instalar dependencias
+npm install
+
+# Iniciar servidor de desarrollo (http://localhost:4200)
+npm start
+
+# Compilar compilado de producción optimizado
+npm run build
+
+# Correr tests unitarios
+npm test
+
+# Formatear el código con Prettier
+npx prettier --write "src/**/*.{ts,html,css}"
 ```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.

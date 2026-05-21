@@ -20,9 +20,7 @@
 }
 
 @if (!loading && !error && peliculas.length === 0) {
-  <div class="alert alert-info">
-    No hay películas disponibles.
-  </div>
+  <div class="alert alert-info">No hay películas disponibles.</div>
 }
 
 @if (!loading && !error && peliculas.length > 0) {
@@ -32,7 +30,9 @@
         <div class="card h-100 shadow-sm">
           <img [src]="p.big_image || p.image" [alt]="p.title" class="card-img-top" loading="lazy" />
           <div class="card-body">
-            <h5 class="card-title">{{ p.title }} <small class="text-muted">({{ p.year }})</small></h5>
+            <h5 class="card-title">
+              {{ p.title }} <small class="text-muted">({{ p.year }})</small>
+            </h5>
             <p class="card-text">{{ truncar(p.description) }}</p>
             <div class="d-flex flex-wrap gap-1">
               @for (g of p.genre; track g) {
