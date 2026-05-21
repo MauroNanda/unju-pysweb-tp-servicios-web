@@ -5,10 +5,24 @@
 </section>
 
 @if (loading) {
-  <div class="text-center my-5">
-    <div class="spinner-border text-primary" role="status">
-      <span class="visually-hidden">Cargando...</span>
-    </div>
+  <div class="row g-4 mt-2">
+    @for (i of [1,2,3,4,5,6]; track i) {
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm border-0">
+          <div class="skeleton-box w-100" style="height: 300px;"></div>
+          <div class="card-body">
+            <div class="skeleton-box w-75 mb-3" style="height: 24px;"></div>
+            <div class="skeleton-box w-100 mb-2" style="height: 16px;"></div>
+            <div class="skeleton-box w-100 mb-2" style="height: 16px;"></div>
+            <div class="skeleton-box w-50 mb-3" style="height: 16px;"></div>
+            <div class="d-flex gap-2">
+              <div class="skeleton-box w-25" style="height: 24px; border-radius: 12px;"></div>
+              <div class="skeleton-box w-25" style="height: 24px; border-radius: 12px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
   </div>
 }
 
@@ -60,7 +74,7 @@
     <div class="row g-4">
       @for (p of filteredPeliculas; track p.id) {
       <div class="col-12 col-md-6 col-lg-4">
-        <div class="card h-100 shadow-sm">
+        <div class="card h-100 shadow-sm hover-card border-0">
           <img [src]="p.big_image || p.image" [alt]="p.title" class="card-img-top" loading="lazy" />
           <div class="card-body">
             <h5 class="card-title">
