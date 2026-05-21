@@ -1,1 +1,47 @@
-<p>peliculas works!</p>
+<section class="bg-dark text-light py-5 mb-4 rounded-3 text-center">
+  <h1 class="display-5 fw-bold">Portal de Películas</h1>
+  <p class="lead">Top 100 películas según IMDB</p>
+  <button class="btn btn-warning btn-lg" (click)="scrollToGrid()">EXPLORAR ESTRENOS</button>
+</section>
+
+@if (loading) {
+  <div class="text-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+  </div>
+}
+
+@if (error && !loading) {
+  <div class="alert alert-danger d-flex justify-content-between">
+    <span>{{ error }}</span>
+    <button class="btn btn-sm btn-outline-danger" (click)="cargar()">Reintentar</button>
+  </div>
+}
+
+@if (!loading && !error && peliculas.length === 0) {
+  <div class="alert alert-info">
+    No hay películas disponibles.
+  </div>
+}
+
+@if (!loading && !error && peliculas.length > 0) {
+  <div id="grid-peliculas" class="row g-4">
+    @for (p of peliculas; track p.id) {
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm">
+          <img [src]="p.big_image || p.image" [alt]="p.title" class="card-img-top" loading="lazy" />
+          <div class="card-body">
+            <h5 class="card-title">{{ p.title }} <small class="text-muted">({{ p.year }})</small></h5>
+            <p class="card-text">{{ truncar(p.description) }}</p>
+            <div class="d-flex flex-wrap gap-1">
+              @for (g of p.genre; track g) {
+                <span class="badge" [ngClass]="colorBadge(g)">{{ g }}</span>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+}
