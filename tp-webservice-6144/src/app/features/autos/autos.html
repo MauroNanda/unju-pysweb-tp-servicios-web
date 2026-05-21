@@ -1,1 +1,61 @@
-<p>autos works!</p>
+<h1 class="mb-4">Card Maker · Marcas de Autos</h1>
+
+@if (loadingMarcas) {
+  <div class="text-center my-5">
+    <div class="spinner-border text-primary"></div>
+  </div>
+}
+
+@if (error) {
+  <div class="alert alert-danger">{{ error }}</div>
+}
+
+@if (!loadingMarcas) {
+  <div class="row g-3">
+    @for (m of marcas; track m.id) {
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="card h-100 text-center shadow-sm" role="button" (click)="abrirModal(m)">
+          <img [src]="m.logo" [alt]="m.name" class="card-img-top p-3" style="height: 140px; object-fit: contain;" />
+          <div class="card-body">
+            <h5 class="card-title">{{ m.name }}</h5>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+}
+
+<!-- Modal Bootstrap nativo -->
+<div class="modal fade" id="modalModelos" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modelos de {{ marcaSeleccionada?.name }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        @if (loadingModelos) {
+          <div class="text-center my-3">
+            <div class="spinner-border text-primary"></div>
+          </div>
+        }
+        @if (!loadingModelos) {
+          <ul class="list-group">
+            @for (modelo of modelos; track modelo.id) {
+              <li class="list-group-item">
+                {{ modelo.name }}
+                @if (modelo.year) {
+                  <span class="text-muted">({{ modelo.year }})</span>
+                }
+              </li>
+            } @empty {
+              <li class="list-group-item text-muted">
+                No hay modelos para esta marca.
+              </li>
+            }
+          </ul>
+        }
+      </div>
+    </div>
+  </div>
+</div>
