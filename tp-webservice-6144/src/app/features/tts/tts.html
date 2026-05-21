@@ -5,9 +5,9 @@
     <div class="card shadow-sm border-0 rounded-4">
       <div class="card-body p-4 p-md-5">
         <div class="mb-4">
-          <label class="form-label text-muted fw-semibold small text-uppercase">Texto a convertir (máx. 300 caracteres)</label>
+          <label class="form-label text-secondary">Texto a convertir (máx. 300 caracteres)</label>
           <textarea
-            class="form-control rounded-4 shadow-sm border-0 bg-body-tertiary p-3"
+            class="form-control"
             rows="4"
             maxlength="300"
             [(ngModel)]="texto"
@@ -19,9 +19,9 @@
           </div>
         </div>
 
-        <div class="mb-5">
-          <label class="form-label text-muted fw-semibold small text-uppercase">Voz</label>
-          <select class="form-select form-select-lg rounded-pill shadow-sm border-0 bg-body-tertiary px-4" [(ngModel)]="voz">
+        <div class="mb-4">
+          <label class="form-label text-secondary">Voz</label>
+          <select class="form-select" [(ngModel)]="voz">
             @for (v of voces; track v.id) {
               <option [value]="v.id">{{ v.label }}</option>
             }
@@ -29,7 +29,7 @@
         </div>
 
         <button
-          class="btn btn-primary btn-lg w-100 rounded-pill shadow-sm fw-bold"
+          class="btn btn-primary w-100"
           (click)="convertir()"
           [disabled]="!formValido || loading"
         >
@@ -41,9 +41,9 @@
         }
 
         @if (audioUrl) {
-          <div class="mt-5 p-4 bg-body-tertiary rounded-4 text-center">
-            <label class="form-label text-muted fw-semibold small text-uppercase d-block mb-3">Resultado Generado</label>
-            <audio [src]="audioUrl" controls class="w-100 rounded-pill shadow-sm"></audio>
+          <div class="mt-4 border rounded p-3 text-center">
+            <label class="form-label text-secondary d-block mb-3">Resultado Generado</label>
+            <audio [src]="audioUrl" controls class="w-100"></audio>
           </div>
         }
       </div>

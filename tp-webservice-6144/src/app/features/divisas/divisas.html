@@ -6,26 +6,26 @@
 
         <div class="row g-3 mt-1">
           <div class="col-12 col-md-6">
-            <label class="form-label text-muted fw-semibold small text-uppercase">Moneda Origen</label>
-            <select class="form-select form-select-lg mb-4 rounded-pill shadow-sm border-0 bg-body-tertiary" [(ngModel)]="origen">
+            <label class="form-label text-secondary">Moneda Origen</label>
+            <select class="form-select mb-3" [(ngModel)]="origen">
               @for (m of monedas; track m) {
                 <option [value]="m">{{ m }}</option>
               }
             </select>
-            <label class="form-label text-muted fw-semibold small text-uppercase">Monto Origen</label>
-            <input type="number" class="form-control form-control-lg rounded-pill shadow-sm border-0 bg-body-tertiary px-4" [(ngModel)]="cantidad" min="0.01" step="0.01" />
+            <label class="form-label text-secondary">Monto Origen</label>
+            <input type="number" class="form-control" [(ngModel)]="cantidad" min="0.01" step="0.01" />
           </div>
           <div class="col-12 col-md-6">
-            <label class="form-label text-muted fw-semibold small text-uppercase">Moneda Destino</label>
-            <select class="form-select form-select-lg mb-4 rounded-pill shadow-sm border-0 bg-body-tertiary" [(ngModel)]="destino">
+            <label class="form-label text-secondary">Moneda Destino</label>
+            <select class="form-select mb-3" [(ngModel)]="destino">
               @for (m of monedas; track m) {
                 <option [value]="m">{{ m }}</option>
               }
             </select>
-            <label class="form-label text-muted fw-semibold small text-uppercase">Monto Destino (Resultado)</label>
+            <label class="form-label text-secondary">Monto Destino (Resultado)</label>
             <input
               type="text"
-              class="form-control form-control-lg rounded-pill shadow-sm border-0 bg-body-tertiary px-4 text-primary fw-bold"
+              class="form-control"
               [value]="resultado !== null && !loading ? (resultado | number: '1.2-4') : ''"
               readonly
               placeholder="Resultado..."
@@ -34,7 +34,7 @@
         </div>
 
         <button
-          class="btn btn-primary btn-lg w-100 mt-5 rounded-pill shadow-sm fw-bold"
+          class="btn btn-primary w-100 mt-4"
           (click)="convertir()"
           [disabled]="!formValido || loading"
         >
