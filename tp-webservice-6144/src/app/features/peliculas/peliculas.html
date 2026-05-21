@@ -40,14 +40,20 @@
           />
         </div>
       </div>
-      <div class="col-12 col-md-4 col-lg-3">
-        <select class="form-select form-select-lg border rounded-pill shadow-sm bg-body h-100" [(ngModel)]="sortBy">
-          <option value="rank">Ranking (Top 100)</option>
-          <option value="yearDesc">Más recientes</option>
-          <option value="yearAsc">Más antiguas</option>
-          <option value="titleAsc">Título (A - Z)</option>
-          <option value="titleDesc">Título (Z - A)</option>
-        </select>
+      <div class="col-12 col-md-4 col-lg-4">
+        <div class="d-flex align-items-center bg-body border rounded-pill shadow-sm px-3 py-2 h-100">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="text-muted ms-2 me-2" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M10.082 5.629 9.664 7H8.598l1.789-5.332h1.234L13.402 7h-1.12l-.419-1.371h-1.781zm1.57-.785L11 2.687h-.047l-.652 2.157h1.351z"/>
+            <path d="M12.96 14H8.5v-1.299h2.853v-.047H8.5V11.36h4.46v1.256h-2.845v.047H13v1.337zM4.5 2.5a.5.5 0 0 0-1 0v9.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L4.5 12.293V2.5z"/>
+          </svg>
+          <select class="form-select border-0 shadow-none bg-transparent ps-2 pe-4" [(ngModel)]="sortBy" style="outline: none; cursor: pointer;">
+            <option value="rank">Ranking (Top 100)</option>
+            <option value="yearDesc">Más recientes</option>
+            <option value="yearAsc">Más antiguas</option>
+            <option value="titleAsc">Título (A - Z)</option>
+            <option value="titleDesc">Título (Z - A)</option>
+          </select>
+        </div>
       </div>
     </div>
 
