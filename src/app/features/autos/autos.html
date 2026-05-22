@@ -4,17 +4,20 @@
     <p class="text-muted mb-0">Explora las marcas más reconocidas.</p>
   </div>
   
-  <div class="d-flex align-items-center bg-body border rounded-pill px-3 py-2 text-body hover-card" style="min-width: 250px; max-width: 350px;">
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="text-muted me-2" viewBox="0 0 16 16">
-      <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-    </svg>
-    <input
-      type="search"
-      class="form-control border-0 shadow-none bg-transparent text-body p-0"
-      placeholder="Buscar marca..."
-      [(ngModel)]="searchTerm"
-      style="outline: none; box-shadow: none;"
-    />
+  <div class="d-flex flex-column flex-sm-row gap-3">
+    <!-- Search -->
+    <div class="d-flex align-items-center bg-body border rounded-pill px-3 py-2 text-body hover-card" style="min-width: 250px; max-width: 350px;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="text-muted me-2" viewBox="0 0 16 16">
+        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+      </svg>
+      <input
+        type="search"
+        class="form-control border-0 shadow-none bg-transparent text-body p-0"
+        placeholder="Buscar marca..."
+        [(ngModel)]="searchTerm"
+        style="outline: none; box-shadow: none;"
+      />
+    </div>
   </div>
 </div>
 
@@ -38,7 +41,7 @@
     @for (m of filteredMarcas; track m.id) {
       <div class="col-4 col-sm-3 col-md-2 col-xl-2">
         <div class="d-flex flex-column align-items-center text-center hover-card" role="button" (click)="abrirModal(m)" style="cursor: pointer;">
-          <div class="bg-body rounded-circle shadow d-flex align-items-center justify-content-center mb-3 overflow-hidden" style="width: 100px; height: 100px; border: 2px solid var(--bs-border-color);">
+          <div class="bg-body rounded-circle shadow d-flex align-items-center justify-content-center mb-3 overflow-hidden border border-2 border-secondary" style="width: 100px; height: 100px;">
             <img
               [src]="m.logo"
               [alt]="m.name"
@@ -55,42 +58,115 @@
 }
 
 <!-- Modal Bootstrap nativo -->
-<div class="modal fade" id="modalModelos" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="modalModelos" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
   <div class="modal-dialog modal-lg modal-dialog-scrollable">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Modelos de {{ marcaSeleccionada?.name }}</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Cerrar"
-        ></button>
+      <div class="modal-header align-items-center">
+        <h5 class="modal-title fs-5">
+          <span role="button" class="text-primary hover-card fw-bold" (click)="resetModalNav()">{{ marcaSeleccionada?.name || 'Marcas' }}</span>
+          
+          @if (modeloSeleccionado) {
+            <span class="text-muted mx-2">/</span>
+            <span class="fw-bold text-body">{{ modeloSeleccionado.name }}</span>
+          }
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
-      <div class="modal-body">
-        @if (loadingModelos) {
-          <div class="d-flex flex-column gap-2 mt-2">
-            @for (i of [1,2,3,4,5]; track i) {
-              <div class="skeleton-box w-100" style="height: 40px;"></div>
-            }
-          </div>
-        }
+      
+      <div class="modal-body p-0 bg-body-tertiary">
         @if (errorModelos) {
-          <div class="alert alert-danger shadow-sm">{{ errorModelos }}</div>
+          <div class="alert alert-danger m-3 shadow-sm">{{ errorModelos }}</div>
         }
-        @if (!loadingModelos && !errorModelos) {
-          <ul class="list-group">
-            @for (modelo of modelos; track modelo.id) {
-              <li class="list-group-item">
-                {{ modelo.name }}
-                @if (modelo.year) {
-                  <span class="text-muted">({{ modelo.year }})</span>
-                }
-              </li>
-            } @empty {
-              <li class="list-group-item text-muted">No hay modelos para esta marca.</li>
-            }
-          </ul>
+
+        <!-- 1. Lista de Modelos -->
+        @if (!modeloSeleccionado) {
+          <div class="p-4 bg-body-tertiary text-center border-bottom border-secondary border-opacity-25">
+            <h4 class="fw-bold mb-1">Modelos de {{ marcaSeleccionada?.name }}</h4>
+            <p class="text-muted small mb-0">Selecciona un vehículo para ver sus especificaciones detalladas.</p>
+          </div>
+          @if (loadingModelos) {
+            <div class="p-5 text-center">
+              <div class="spinner-border text-primary" role="status"></div>
+            </div>
+          } @else {
+            <div class="list-group list-group-flush">
+              @for (modelo of modelos; track modelo.id) {
+                <button class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-3 px-4 border-bottom" (click)="seleccionarModelo(modelo)">
+                  <span class="fw-bold fs-5">{{ modelo.name }}</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="text-muted" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/></svg>
+                </button>
+              } @empty {
+                <div class="p-5 text-center text-muted">No hay modelos disponibles.</div>
+              }
+            </div>
+          }
+        }
+
+        <!-- 2. Vista Rápida de Especificaciones -->
+        @if (modeloSeleccionado) {
+          @if (loadingSpecs) {
+            <div class="p-5 text-center">
+              <div class="spinner-border text-primary" role="status"></div>
+              <p class="mt-3 text-muted">Cargando especificaciones completas...</p>
+            </div>
+          } @else if (specsActuales) {
+            <div class="p-4 bg-body">
+              <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                  <label class="form-label text-muted small fw-bold mb-1">AÑO / GENERACIÓN</label>
+                  <select class="form-select border-secondary border-opacity-25" [(ngModel)]="generacionSeleccionada" (ngModelChange)="cambiarGeneracion($event)">
+                    @for (gen of generaciones; track gen.id) {
+                      <option [ngValue]="gen">{{ gen.name }} ({{ gen.yearFrom }} - {{ gen.yearTo || 'Presente' }})</option>
+                    }
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label text-muted small fw-bold mb-1">VERSIÓN</label>
+                  <select class="form-select border-secondary border-opacity-25" [(ngModel)]="trimSeleccionado" (ngModelChange)="cambiarTrim($event)">
+                    @for (trim of trims; track trim.id) {
+                      <option [ngValue]="trim">{{ trim.trim }} {{ trim.series }} ({{ trim.bodyType }})</option>
+                    }
+                  </select>
+                </div>
+              </div>
+              
+              <div class="row g-4">
+                <div class="col-md-6">
+                  <div class="card border border-secondary border-opacity-25 shadow-sm h-100">
+                    <div class="card-header bg-body-tertiary border-bottom pt-3 pb-2">
+                      <h6 class="text-uppercase fw-bold text-muted mb-0">Rendimiento</h6>
+                    </div>
+                    <div class="card-body">
+                      <ul class="list-unstyled mb-0">
+                        <li class="d-flex justify-content-between border-bottom border-light-subtle py-2"><span>Motor (HP)</span> <span class="fw-bold">{{ specsActuales.engineHp || '-' }}</span></li>
+                        <li class="d-flex justify-content-between border-bottom border-light-subtle py-2"><span>Cilindrada</span> <span class="fw-bold">{{ specsActuales.capacityCm3 ? specsActuales.capacityCm3 + ' cc' : '-' }}</span></li>
+                        <li class="d-flex justify-content-between border-bottom border-light-subtle py-2"><span>Transmisión</span> <span class="fw-bold text-end ms-3">{{ specsActuales.transmission || '-' }}</span></li>
+                        <li class="d-flex justify-content-between border-bottom border-light-subtle py-2"><span>Tracción</span> <span class="fw-bold text-end ms-3">{{ specsActuales.driveWheels || '-' }}</span></li>
+                        <li class="d-flex justify-content-between py-2"><span>0 - 100 km/h</span> <span class="fw-bold">{{ specsActuales.acceleration0To100KmPerHS ? specsActuales.acceleration0To100KmPerHS + ' s' : '-' }}</span></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="col-md-6">
+                  <div class="card border border-secondary border-opacity-25 shadow-sm h-100">
+                    <div class="card-header bg-body-tertiary border-bottom pt-3 pb-2">
+                      <h6 class="text-uppercase fw-bold text-muted mb-0">Dimensiones & Consumo</h6>
+                    </div>
+                    <div class="card-body">
+                      <ul class="list-unstyled mb-0">
+                        <li class="d-flex justify-content-between border-bottom border-light-subtle py-2"><span>Carrocería</span> <span class="fw-bold text-end ms-3">{{ specsActuales.bodyType || '-' }}</span></li>
+                        <li class="d-flex justify-content-between border-bottom border-light-subtle py-2"><span>Peso</span> <span class="fw-bold">{{ specsActuales.curbWeightKg ? specsActuales.curbWeightKg + ' kg' : '-' }}</span></li>
+                        <li class="d-flex justify-content-between border-bottom border-light-subtle py-2"><span>Largo</span> <span class="fw-bold">{{ specsActuales.lengthMm ? specsActuales.lengthMm + ' mm' : '-' }}</span></li>
+                        <li class="d-flex justify-content-between border-bottom border-light-subtle py-2"><span>Urbano</span> <span class="fw-bold">{{ specsActuales.cityFuelPer100KmL ? specsActuales.cityFuelPer100KmL + ' L/100km' : '-' }}</span></li>
+                        <li class="d-flex justify-content-between py-2"><span>Carretera</span> <span class="fw-bold">{{ specsActuales.highwayFuelPer100KmL ? specsActuales.highwayFuelPer100KmL + ' L/100km' : '-' }}</span></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
         }
       </div>
     </div>

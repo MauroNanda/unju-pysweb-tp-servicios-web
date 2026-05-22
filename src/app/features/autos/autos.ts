@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { switchMap } from 'rxjs/operators';
 
-import { Marca, Modelo } from '../../core/models/auto.model';
+import { Generation, Marca, Modelo, Trim, TrimSpecs } from '../../core/models/auto.model';
 import { AutosService } from '../../core/services/autos.service';
 
 @Component({
@@ -16,7 +17,15 @@ export class Autos implements OnInit, AfterViewInit {
 
   marcas: Marca[] = [];
   modelos: Modelo[] = [];
+  generaciones: Generation[] = [];
+  trims: Trim[] = [];
+
   marcaSeleccionada: Marca | null = null;
+  modeloSeleccionado: Modelo | null = null;
+  generacionSeleccionada: Generation | null = null;
+  trimSeleccionado: Trim | null = null;
+  specsActuales: TrimSpecs | null = null;
+
   searchTerm = '';
 
   get filteredMarcas(): Marca[] {
@@ -29,6 +38,10 @@ export class Autos implements OnInit, AfterViewInit {
 
   loadingMarcas = false;
   loadingModelos = false;
+  loadingGeneraciones = false;
+  loadingTrims = false;
+  loadingSpecs = false;
+
   error: string | null = null;
   errorModelos: string | null = null;
 
@@ -43,6 +56,7 @@ export class Autos implements OnInit, AfterViewInit {
     const el = document.getElementById('modalModelos');
     if (bs && el) {
       this.modal = new bs.Modal(el);
+      el.addEventListener('hidden.bs.modal', () => this.resetModalNav());
     }
   }
 
@@ -61,6 +75,7 @@ export class Autos implements OnInit, AfterViewInit {
   }
 
   abrirModal(marca: Marca): void {
+    this.resetModalNav();
     this.marcaSeleccionada = marca;
     this.modelos = [];
     this.loadingModelos = true;
@@ -77,5 +92,78 @@ export class Autos implements OnInit, AfterViewInit {
         this.loadingModelos = false;
       },
     });
+  }
+
+  seleccionarModelo(m: Modelo): void {
+    this.modeloSeleccionado = m;
+    this.loadingSpecs = true;
+    this.errorModelos = null;
+    
+    this.autosService.getGenerationsByModel(m.id).pipe(
+      switchMap(gens => {
+        if (!gens.length) throw new Error('No hay generaciones disponibles para este modelo.');
+        this.generaciones = gens;
+        this.generacionSeleccionada = gens[0];
+        return this.autosService.getTrimsByGeneration(gens[0].id);
+      }),
+      switchMap(trims => {
+        if (!trims.length) throw new Error('No hay versiones disponibles.');
+        this.trims = trims;
+        this.trimSeleccionado = trims[0];
+        return this.autosService.getSpecsByTrim(trims[0].id);
+      })
+    ).subscribe({
+      next: (specs) => {
+        this.specsActuales = specs;
+        this.loadingSpecs = false;
+      },
+      error: (e) => { 
+        this.errorModelos = e.message; 
+        this.loadingSpecs = false; 
+      }
+    });
+  }
+
+  cambiarGeneracion(g: Generation): void {
+    this.generacionSeleccionada = g;
+    this.loadingSpecs = true;
+    this.errorModelos = null;
+    
+    this.autosService.getTrimsByGeneration(g.id).pipe(
+      switchMap(trims => {
+        if (!trims.length) throw new Error('No hay versiones en esta generación.');
+        this.trims = trims;
+        this.trimSeleccionado = trims[0];
+        return this.autosService.getSpecsByTrim(trims[0].id);
+      })
+    ).subscribe({
+      next: (specs) => {
+        this.specsActuales = specs;
+        this.loadingSpecs = false;
+      },
+      error: (e) => { this.errorModelos = e.message; this.loadingSpecs = false; }
+    });
+  }
+
+  cambiarTrim(t: Trim): void {
+    this.trimSeleccionado = t;
+    this.loadingSpecs = true;
+    this.errorModelos = null;
+    
+    this.autosService.getSpecsByTrim(t.id).subscribe({
+      next: (specs) => {
+        this.specsActuales = specs;
+        this.loadingSpecs = false;
+      },
+      error: (e) => { this.errorModelos = e.message; this.loadingSpecs = false; }
+    });
+  }
+
+  resetModalNav(): void {
+    this.modeloSeleccionado = null;
+    this.generacionSeleccionada = null;
+    this.trimSeleccionado = null;
+    this.specsActuales = null;
+    this.errorModelos = null;
   }
 }
