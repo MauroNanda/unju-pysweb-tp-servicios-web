@@ -1,51 +1,118 @@
-<div class="row justify-content-center">
-  <div class="col-12 col-lg-8">
-    <h2 class="mb-5 text-center fw-bold">Generador de Códigos QR</h2>
+<div class="container px-3 px-md-0">
+  <div class="text-center mb-5">
+    <h2 class="fw-bold mb-2">Estación QR Premium</h2>
+    <p class="text-muted">Crea códigos escaneables de alta resolución al instante.</p>
+  </div>
 
-    <div class="card shadow-sm border-0 rounded-4">
-      <div class="card-body p-4 p-md-5">
-        <div class="mb-4">
-          <label class="form-label text-secondary">Texto o URL a codificar</label>
-          <input class="form-control" [(ngModel)]="texto" placeholder="https://..." />
-        </div>
-
-        <div class="row g-4 mb-4">
-          <div class="col-12 col-md-6">
-            <label class="form-label text-secondary">Tamaño: {{ size }} px</label>
-            <input
-              type="range"
-              class="form-range"
-              min="100"
-              max="500"
-              step="50"
-              [(ngModel)]="size"
-            />
-          </div>
-          <div class="col-12 col-md-6">
-            <label class="form-label text-secondary">Corrección de errores</label>
-            <select class="form-select" [(ngModel)]="ecc">
-              <option value="L">L (7%)</option>
-              <option value="M">M (15%)</option>
-              <option value="Q">Q (25%)</option>
-              <option value="H">H (30%)</option>
-            </select>
-          </div>
-        </div>
-
-        <button class="btn btn-primary w-100" (click)="generar()" [disabled]="!texto.trim()">
-          Generar QR
-        </button>
-
-        @if (qrUrl) {
-          <div class="text-center mt-4 border rounded p-3">
-            <label class="form-label text-secondary d-block mb-3">Código Generado</label>
-            <img [src]="qrUrl" alt="Código QR" class="img-fluid border p-2 bg-white mb-3" />
-            <div>
-              <button class="btn btn-success" (click)="descargar()">Descargar PNG</button>
+  <div class="row g-4 justify-content-center">
+    
+    <!-- Columna Izquierda: Controles -->
+    <div class="col-12 col-lg-6 col-xl-5">
+      <div class="card shadow-sm border-0 rounded-4 h-100">
+        <div class="card-body p-4 p-md-5 d-flex flex-column">
+          
+          <div class="mb-4">
+            <label class="form-label text-secondary fw-bold small text-uppercase mb-2">Contenido (URL o Texto)</label>
+            <div class="input-group input-group-lg shadow-sm rounded-3 overflow-hidden">
+              <span class="input-group-text bg-body border-end-0 text-muted">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"/><path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"/></svg>
+              </span>
+              <input type="text" class="form-control border-start-0 border-end-0 bg-body shadow-none px-0" [(ngModel)]="texto" placeholder="Ej: https://unju.edu.ar" style="outline: none;">
+              <span class="input-group-text bg-body border-start-0 text-muted">
+                @if (texto) {
+                  <button class="btn btn-sm btn-link text-muted p-0 shadow-none" (click)="texto = ''">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/></svg>
+                  </button>
+                }
+              </span>
             </div>
           </div>
-        }
+
+          <div class="row g-4 mb-4">
+            <div class="col-12">
+              <label class="form-label text-secondary fw-bold small text-uppercase mb-2 d-flex justify-content-between">
+                <span>Resolución</span>
+                <span class="text-primary">{{ size }} x {{ size }} px</span>
+              </label>
+              <div class="d-flex align-items-center gap-3">
+                <span class="text-muted small">100px</span>
+                <input
+                  type="range"
+                  class="form-range flex-grow-1"
+                  min="100"
+                  max="500"
+                  step="50"
+                  [(ngModel)]="size"
+                />
+                <span class="text-muted small">500px</span>
+              </div>
+            </div>
+            
+            <div class="col-12">
+              <label class="form-label text-secondary fw-bold small text-uppercase mb-2">Corrección de errores (Densidad)</label>
+              <select class="form-select form-select-lg shadow-sm rounded-3 cursor-pointer" [(ngModel)]="ecc">
+                <option value="L">Nivel L (Baja, 7% restauración) - Ideal para URLs</option>
+                <option value="M">Nivel M (Media, 15% restauración)</option>
+                <option value="Q">Nivel Q (Alta, 25% restauración)</option>
+                <option value="H">Nivel H (Máxima, 30% restauración) - Ideal para logos</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="mt-auto pt-2">
+            <button 
+              class="btn btn-primary btn-lg w-100 rounded-pill fw-bold shadow-sm text-uppercase d-flex align-items-center justify-content-center gap-2" 
+              (click)="generar()" 
+              [disabled]="!texto.trim()"
+              style="padding-top: 14px; padding-bottom: 14px; letter-spacing: 1px;"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M2 2h2v2H2V2Z"/><path d="M6 0v6H0V0h6ZM5 1H1v4h4V1ZM4 12H2v2h2v-2Z"/><path d="M6 10v6H0v-6h6Zm-5 1v4h4v-4H1Zm11-9h2v2h-2V2Z"/><path d="M10 0v6h6V0h-6Zm5 1v4h-4V1h4ZM8 1V0h1v2H8v2H7V1h1Zm0 5V4h1v2H8ZM6 8V7h1V6h1v2h1V7h5v1h-4v1H7V8H6Zm0 0v1H2V8H1v1H0V7h3v1h3Zm10 1h-1V7h1v2Zm-1 0h-1v2h2v-1h-1V9Zm-4 0h2v1h-1v1h-1V9Zm2 3v-1h-1v1h-1v1H9v1h3v-2h1Zm0 0h3v1h-2v1h-1v-2Zm-4-1v1h1v-2H7v1h2Z"/><path d="M7 12h1v3h4v1H7v-4Zm9 2v2h-3v-1h2v-1h1Z"/></svg>
+              Crear Código QR
+            </button>
+          </div>
+          
+        </div>
       </div>
     </div>
+
+    <!-- Columna Derecha: Previsualización -->
+    <div class="col-12 col-lg-6 col-xl-5">
+      <div class="card shadow-sm border-0 rounded-4 h-100 bg-body-tertiary">
+        <div class="card-body p-4 p-md-5 d-flex flex-column align-items-center justify-content-center min-vh-50 position-relative">
+          
+          <!-- Escuadras del "marco de escaneo" -->
+          <div class="position-absolute border-primary" style="top: 2rem; left: 2rem; width: 40px; height: 40px; border-top: 4px solid; border-left: 4px solid; border-top-left-radius: 10px;"></div>
+          <div class="position-absolute border-primary" style="top: 2rem; right: 2rem; width: 40px; height: 40px; border-top: 4px solid; border-right: 4px solid; border-top-right-radius: 10px;"></div>
+          <div class="position-absolute border-primary" style="bottom: 2rem; left: 2rem; width: 40px; height: 40px; border-bottom: 4px solid; border-left: 4px solid; border-bottom-left-radius: 10px;"></div>
+          <div class="position-absolute border-primary" style="bottom: 2rem; right: 2rem; width: 40px; height: 40px; border-bottom: 4px solid; border-right: 4px solid; border-bottom-right-radius: 10px;"></div>
+
+          @if (!qrUrl) {
+            <div class="text-center opacity-50">
+              <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="mb-3" viewBox="0 0 16 16"><path d="M2 2h2v2H2V2Z"/><path d="M6 0v6H0V0h6ZM5 1H1v4h4V1ZM4 12H2v2h2v-2Z"/><path d="M6 10v6H0v-6h6Zm-5 1v4h4v-4H1Zm11-9h2v2h-2V2Z"/><path d="M10 0v6h6V0h-6Zm5 1v4h-4V1h4ZM8 1V0h1v2H8v2H7V1h1Zm0 5V4h1v2H8ZM6 8V7h1V6h1v2h1V7h5v1h-4v1H7V8H6Zm0 0v1H2V8H1v1H0V7h3v1h3Zm10 1h-1V7h1v2Zm-1 0h-1v2h2v-1h-1V9Zm-4 0h2v1h-1v1h-1V9Zm2 3v-1h-1v1h-1v1H9v1h3v-2h1Zm0 0h3v1h-2v1h-1v-2Zm-4-1v1h1v-2H7v1h2Z"/><path d="M7 12h1v3h4v1H7v-4Zm9 2v2h-3v-1h2v-1h1Z"/></svg>
+              <p class="fw-bold mb-0">Previsualización de QR</p>
+              <small>El código aparecerá aquí</small>
+            </div>
+          } @else {
+            <div class="text-center w-100" style="z-index: 1;">
+              <div class="bg-white p-3 rounded-4 shadow-sm d-inline-block mb-4 transition-all hover-scale position-relative">
+                <img [src]="qrUrl" alt="Código QR Generado" class="img-fluid rounded" style="max-width: 100%;" />
+              </div>
+              
+              <div class="d-flex flex-column align-items-center w-100 px-4">
+                <button 
+                  class="btn btn-success btn-lg rounded-pill fw-bold shadow d-flex align-items-center gap-2 w-100 justify-content-center transition-all hover-scale" 
+                  (click)="descargar()"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
+                  Guardar PNG
+                </button>
+                <small class="text-muted mt-2 fw-semibold">Listo para imprimir o escanear</small>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+    
   </div>
 </div>
