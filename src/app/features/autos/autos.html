@@ -1,55 +1,53 @@
-<h1 class="mb-4">Card Maker · Marcas de Autos</h1>
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4 pb-3 border-bottom">
+  <div class="mb-3 mb-md-0">
+    <h1 class="fs-2 fw-bold mb-1">Catálogo de Vehículos</h1>
+    <p class="text-muted mb-0">Explora las marcas más reconocidas.</p>
+  </div>
+  
+  <div class="d-flex align-items-center bg-body border rounded-pill px-3 py-2 text-body hover-card" style="min-width: 250px; max-width: 350px;">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="text-muted me-2" viewBox="0 0 16 16">
+      <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+    </svg>
+    <input
+      type="search"
+      class="form-control border-0 shadow-none bg-transparent text-body p-0"
+      placeholder="Buscar marca..."
+      [(ngModel)]="searchTerm"
+      style="outline: none; box-shadow: none;"
+    />
+  </div>
+</div>
 
 @if (loadingMarcas) {
-  <div class="row g-3 mt-2">
-    @for (i of [1,2,3,4,5,6,7,8]; track i) {
-      <div class="col-6 col-md-4 col-lg-3">
-        <div class="card h-100 shadow-sm border-0">
-          <div class="skeleton-box w-100" style="height: 140px; border-bottom-left-radius: 0; border-bottom-right-radius: 0;"></div>
-          <div class="card-body d-flex justify-content-center">
-            <div class="skeleton-box w-75" style="height: 24px;"></div>
-          </div>
-        </div>
+  <div class="row g-4 mt-2">
+    @for (i of [1,2,3,4,5,6,7,8,9,10,11,12]; track i) {
+      <div class="col-4 col-sm-3 col-md-2 col-xl-2 d-flex flex-column align-items-center">
+        <div class="skeleton-box rounded-circle mb-3 shadow-sm" style="width: 100px; height: 100px;"></div>
+        <div class="skeleton-box w-75 rounded-pill" style="height: 16px;"></div>
       </div>
     }
   </div>
 }
 
 @if (error) {
-  <div class="alert alert-danger">{{ error }}</div>
+  <div class="alert alert-danger shadow-sm rounded-3">{{ error }}</div>
 }
 
 @if (!loadingMarcas) {
-  <div class="row mb-5">
-    <div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
-      <div class="d-flex align-items-center bg-body border rounded-pill shadow-sm px-3 py-2">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="text-muted ms-2 me-3" viewBox="0 0 16 16">
-          <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-        </svg>
-        <input
-          type="search"
-          class="form-control border-0 shadow-none bg-transparent"
-          placeholder="Buscar marca de auto..."
-          [(ngModel)]="searchTerm"
-          style="outline: none;"
-        />
-      </div>
-    </div>
-  </div>
-
-  <div class="row g-3">
+  <div class="row g-4 mt-2">
     @for (m of filteredMarcas; track m.id) {
-      <div class="col-6 col-md-4 col-lg-3">
-        <div class="card h-100 text-center shadow-sm hover-card border-0" role="button" (click)="abrirModal(m)">
-          <img
-            [src]="m.logo"
-            [alt]="m.name"
-            class="card-img-top p-3"
-            style="height: 140px; object-fit: contain"
-          />
-          <div class="card-body">
-            <h5 class="card-title">{{ m.name }}</h5>
+      <div class="col-4 col-sm-3 col-md-2 col-xl-2">
+        <div class="d-flex flex-column align-items-center text-center hover-card" role="button" (click)="abrirModal(m)" style="cursor: pointer;">
+          <div class="bg-body rounded-circle shadow d-flex align-items-center justify-content-center mb-3 overflow-hidden" style="width: 100px; height: 100px; border: 2px solid var(--bs-border-color);">
+            <img
+              [src]="m.logo"
+              [alt]="m.name"
+              class="w-100 h-100"
+              style="object-fit: cover;"
+              loading="lazy"
+            />
           </div>
+          <h6 class="fw-bold mb-0 text-truncate w-100" [title]="m.name" style="font-size: 0.95rem;">{{ m.name }}</h6>
         </div>
       </div>
     }
@@ -77,7 +75,10 @@
             }
           </div>
         }
-        @if (!loadingModelos) {
+        @if (errorModelos) {
+          <div class="alert alert-danger shadow-sm">{{ errorModelos }}</div>
+        }
+        @if (!loadingModelos && !errorModelos) {
           <ul class="list-group">
             @for (modelo of modelos; track modelo.id) {
               <li class="list-group-item">

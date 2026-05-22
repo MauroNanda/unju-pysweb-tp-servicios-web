@@ -9,9 +9,9 @@ export const routes: Routes = [
     title: 'TP · Películas',
   },
   {
-    path: 'autos',
+    path: 'vehiculos',
     loadComponent: () => import('./features/autos/autos').then((m) => m.Autos),
-    title: 'TP · Autos',
+    title: 'TP · Vehículos',
   },
   {
     path: 'divisas',

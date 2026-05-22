@@ -30,6 +30,7 @@ export class Autos implements OnInit, AfterViewInit {
   loadingMarcas = false;
   loadingModelos = false;
   error: string | null = null;
+  errorModelos: string | null = null;
 
   private modal: any;
 
@@ -63,6 +64,7 @@ export class Autos implements OnInit, AfterViewInit {
     this.marcaSeleccionada = marca;
     this.modelos = [];
     this.loadingModelos = true;
+    this.errorModelos = null;
     this.modal?.show();
 
     this.autosService.getModelosByMarca(marca.id).subscribe({
@@ -71,7 +73,7 @@ export class Autos implements OnInit, AfterViewInit {
         this.loadingModelos = false;
       },
       error: (err: Error) => {
-        this.error = err.message;
+        this.errorModelos = err.message;
         this.loadingModelos = false;
       },
     });
