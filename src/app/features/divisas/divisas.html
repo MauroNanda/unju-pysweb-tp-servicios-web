@@ -1,52 +1,110 @@
 <div class="row justify-content-center">
-  <div class="col-12 col-md-8 col-lg-6">
-    <div class="card shadow-sm border-0 rounded-4">
+  <div class="col-12 col-md-8 col-xl-6">
+    <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
       <div class="card-body p-4 p-md-5">
-        <h2 class="card-title text-center mb-5 fw-bold">Conversor de Divisas</h2>
-
-        <div class="row g-3 mt-1">
-          <div class="col-12 col-md-6">
-            <label class="form-label text-secondary">Moneda Origen</label>
-            <select class="form-select mb-3" [(ngModel)]="origen">
-              @for (m of monedas; track m) {
-                <option [value]="m">{{ m }}</option>
-              }
-            </select>
-            <label class="form-label text-secondary">Monto Origen</label>
-            <input type="number" class="form-control" [(ngModel)]="cantidad" min="0.01" max="1000000000000" step="0.01" />
-            @if (cantidad > 1000000000000) {
-              <small class="text-danger mt-1 d-block">El monto es demasiado grande.</small>
-            }
-          </div>
-          <div class="col-12 col-md-6">
-            <label class="form-label text-secondary">Moneda Destino</label>
-            <select class="form-select mb-3" [(ngModel)]="destino">
-              @for (m of monedas; track m) {
-                <option [value]="m">{{ m }}</option>
-              }
-            </select>
-            <label class="form-label text-secondary">Monto Destino (Resultado)</label>
-            <input
-              type="text"
-              class="form-control"
-              [value]="resultado !== null && !loading ? (resultado | number: '1.2-4') : ''"
-              readonly
-              placeholder="Resultado..."
-            />
-          </div>
+        
+        <div class="text-center mb-5">
+          <h4 class="fw-bold mb-2 text-muted">Tipo de cambio del mercado</h4>
+          @if (resultado !== null && !loading) {
+            <h2 class="text-success fw-bold mb-0">1 {{ origen }} = {{ (resultado / cantidad) | number: '1.2-4' }} {{ destino }}</h2>
+          } @else {
+            <h2 class="fw-bold mb-0">Calculadora de Divisas</h2>
+          }
         </div>
 
-        <button
-          class="btn btn-primary w-100 mt-4"
-          (click)="convertir()"
-          [disabled]="!formValido || loading"
-        >
-          {{ loading ? 'Convirtiendo…' : 'Convertir' }}
-        </button>
+        <div class="position-relative">
+          
+          <!-- Origen -->
+          <div class="border rounded-4 p-3 d-flex justify-content-between align-items-center bg-body hover-card transition-all border-2">
+            <div class="d-flex flex-column w-100 me-3">
+              <label class="form-label text-muted small fw-bold mb-1">Cantidad</label>
+              <input 
+                type="number" 
+                class="form-control border-0 bg-transparent fs-3 p-0 fw-bold shadow-none" 
+                [(ngModel)]="cantidad" 
+                min="0.01" 
+                max="1000000000000" 
+                step="0.01" 
+                style="outline: none;"
+              />
+            </div>
+            <div class="d-flex align-items-center">
+              <select class="form-select border-0 bg-transparent fs-4 fw-bold shadow-none cursor-pointer pe-4" [(ngModel)]="origen" style="width: auto;">
+                @for (m of monedas; track m) {
+                  <option [value]="m">{{ m }}</option>
+                }
+              </select>
+            </div>
+          </div>
+
+          <!-- Swap Button -->
+          <div class="position-absolute top-50 start-50 translate-middle text-center" style="z-index: 10;">
+            <button 
+              class="btn btn-light rounded-circle shadow border" 
+              style="width: 48px; height: 48px; padding: 0; display: flex; align-items: center; justify-content: center; background-color: var(--bs-body-bg);" 
+              (click)="swap()"
+              title="Intercambiar divisas"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="text-primary fw-bold" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5zm-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5z"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Destino -->
+          <div class="border rounded-4 p-3 d-flex justify-content-between align-items-center bg-body hover-card transition-all mt-3 border-2">
+            <div class="d-flex flex-column w-100 me-3">
+              <label class="form-label text-muted small fw-bold mb-1">Se convierte a</label>
+              @if (loading) {
+                <div class="d-flex align-items-center h-100 pt-2 pb-1">
+                  <div class="spinner-border text-primary spinner-border-sm" role="status"></div>
+                </div>
+              } @else {
+                <input 
+                  type="text" 
+                  class="form-control border-0 bg-transparent fs-3 p-0 fw-bold shadow-none text-body" 
+                  [value]="resultado !== null ? (resultado | number: '1.2-4') : '0,00'" 
+                  readonly 
+                  style="outline: none;"
+                />
+              }
+            </div>
+            <div class="d-flex align-items-center">
+              <select class="form-select border-0 bg-transparent fs-4 fw-bold shadow-none cursor-pointer pe-4" [(ngModel)]="destino" style="width: auto;">
+                @for (m of monedas; track m) {
+                  <option [value]="m">{{ m }}</option>
+                }
+              </select>
+            </div>
+          </div>
+          
+        </div>
+
+        @if (cantidad > 1000000000000) {
+          <small class="text-danger mt-3 d-block text-center fw-bold">El monto ingresado excede el límite permitido.</small>
+        }
+        @if (origen === destino) {
+          <small class="text-warning mt-3 d-block text-center fw-bold">Selecciona monedas diferentes para convertir.</small>
+        }
+
+        <div class="mt-4 pt-3">
+          <button
+            class="btn btn-success btn-lg w-100 rounded-pill fw-bold shadow-sm text-uppercase"
+            (click)="convertir()"
+            [disabled]="!formValido || loading"
+            style="padding-top: 14px; padding-bottom: 14px; letter-spacing: 1px;"
+          >
+            {{ loading ? 'Calculando...' : 'Convertir divisa' }}
+          </button>
+        </div>
 
         @if (error) {
-          <div class="alert alert-danger mt-3">{{ error }}</div>
+          <div class="alert alert-danger mt-4 shadow-sm border-0 rounded-3 d-flex align-items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="me-2 flex-shrink-0" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/></svg>
+            <div>{{ error }}</div>
+          </div>
         }
+        
       </div>
     </div>
   </div>

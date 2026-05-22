@@ -44,4 +44,11 @@ export class Divisas {
       },
     });
   }
+
+  swap(): void {
+    const temp = this.origen;
+    this.origen = this.destino;
+    this.destino = temp;
+    this.resultado = null;
+  }
 }
