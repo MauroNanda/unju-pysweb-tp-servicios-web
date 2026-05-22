@@ -1,39 +1,39 @@
-<section class="text-light py-4 mb-4 rounded-3 text-center shadow-sm" style="background: linear-gradient(135deg, #212529, #495057);">
-  <h1 class="display-6 fw-bold">IMDb Top 100</h1>
-  <p class="lead mb-4">Explora la colección definitiva del séptimo arte.</p>
+<div class="d-flex flex-column flex-xl-row justify-content-between align-items-xl-end mb-4 pb-3 border-bottom">
+  <div class="mb-3 mb-xl-0">
+    <h1 class="fs-2 fw-bold mb-1">IMDb Top 100</h1>
+    <p class="text-muted mb-0">Explora la colección definitiva del séptimo arte.</p>
+  </div>
   
-  <div class="row justify-content-center px-3">
-    <div class="col-12 col-md-6 col-lg-5 mb-3 mb-md-0">
-      <div class="d-flex align-items-center bg-body border rounded-pill shadow-sm px-3 py-2 h-100 text-body">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="text-muted ms-2 me-3" viewBox="0 0 16 16">
-          <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-        </svg>
-        <input
-          type="search"
-          class="form-control border-0 shadow-none bg-transparent text-body"
-          placeholder="Buscar película..."
-          [(ngModel)]="searchTerm"
-          style="outline: none;"
-        />
-      </div>
+  <div class="d-flex flex-column flex-sm-row gap-3">
+    <!-- Search -->
+    <div class="d-flex align-items-center bg-body border rounded-pill px-3 py-2 text-body flex-grow-1 hover-card" style="min-width: 250px;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="text-muted me-2" viewBox="0 0 16 16">
+        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+      </svg>
+      <input
+        type="search"
+        class="form-control border-0 shadow-none bg-transparent text-body p-0"
+        placeholder="Buscar película..."
+        [(ngModel)]="searchTerm"
+        style="outline: none; box-shadow: none;"
+      />
     </div>
-    <div class="col-12 col-md-4 col-lg-4">
-      <div class="d-flex align-items-center bg-body border rounded-pill shadow-sm px-3 py-2 h-100 text-body">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="text-muted ms-2 me-2" viewBox="0 0 16 16">
-          <path fill-rule="evenodd" d="M10.082 5.629 9.664 7H8.598l1.789-5.332h1.234L13.402 7h-1.12l-.419-1.371h-1.781zm1.57-.785L11 2.687h-.047l-.652 2.157h1.351z"/>
-          <path d="M12.96 14H8.5v-1.299h2.853v-.047H8.5V11.36h4.46v1.256h-2.845v.047H13v1.337zM4.5 2.5a.5.5 0 0 0-1 0v9.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L4.5 12.293V2.5z"/>
-        </svg>
-        <select class="form-select border-0 shadow-none bg-transparent ps-2 pe-4 text-body" [(ngModel)]="sortBy" style="outline: none; cursor: pointer;">
-          <option value="rank">Ranking (Top 100)</option>
-          <option value="yearDesc">Más recientes</option>
-          <option value="yearAsc">Más antiguas</option>
-          <option value="titleAsc">Título (A - Z)</option>
-          <option value="titleDesc">Título (Z - A)</option>
-        </select>
-      </div>
+    <!-- Sort -->
+    <div class="d-flex align-items-center bg-body border rounded-pill px-3 py-2 text-body hover-card">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="text-muted me-2" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M10.082 5.629 9.664 7H8.598l1.789-5.332h1.234L13.402 7h-1.12l-.419-1.371h-1.781zm1.57-.785L11 2.687h-.047l-.652 2.157h1.351z"/>
+        <path d="M12.96 14H8.5v-1.299h2.853v-.047H8.5V11.36h4.46v1.256h-2.845v.047H13v1.337zM4.5 2.5a.5.5 0 0 0-1 0v9.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L4.5 12.293V2.5z"/>
+      </svg>
+      <select class="form-select border-0 shadow-none bg-transparent p-0 pe-4 text-body" [(ngModel)]="sortBy" style="outline: none; cursor: pointer; box-shadow: none;">
+        <option class="bg-body text-body" value="rank">Ranking (Top 100)</option>
+        <option class="bg-body text-body" value="yearDesc">Más recientes</option>
+        <option class="bg-body text-body" value="yearAsc">Más antiguas</option>
+        <option class="bg-body text-body" value="titleAsc">Título (A - Z)</option>
+        <option class="bg-body text-body" value="titleDesc">Título (Z - A)</option>
+      </select>
     </div>
   </div>
-</section>
+</div>
 
 @if (loading) {
   <div class="row g-4 mt-2">
@@ -72,23 +72,34 @@
 <div id="grid-peliculas" class="row g-4">
       @for (p of filteredPeliculas; track p.id) {
       <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
-        <div class="card h-100 shadow-sm hover-card border-0" style="font-size: 0.9rem;">
-          <img 
-            [src]="p.big_image || p.image" 
-            [alt]="p.title" 
-            class="card-img-top" 
-            loading="lazy" 
-            style="height: 280px; object-fit: cover;"
-            (error)="handleImageError($event, p.title)" 
-          />
-          <div class="card-body p-2 p-md-3">
-            <h6 class="card-title fw-bold mb-1 lh-sm">
-              {{ p.title }} <small class="text-muted fw-normal">({{ p.year }})</small>
+        <div class="card h-100 bg-transparent border-0 hover-card">
+          <div class="position-relative shadow-sm rounded overflow-hidden">
+            <!-- Badge Rank (IMDb style) -->
+            <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2 fw-bold shadow-sm" style="z-index: 1;">
+              #{{ p.rank }}
+            </span>
+            <!-- Badge Year (Filmin style) -->
+            <span class="badge bg-dark bg-opacity-75 text-light position-absolute bottom-0 end-0 m-2 shadow-sm" style="z-index: 1;">
+              {{ p.year }}
+            </span>
+            
+            <img 
+              [src]="p.big_image || p.image" 
+              [alt]="p.title" 
+              class="w-100" 
+              loading="lazy" 
+              style="height: 320px; object-fit: cover;"
+              (error)="handleImageError($event, p.title)" 
+            />
+          </div>
+          
+          <div class="card-body p-1 mt-2">
+            <h6 class="card-title fw-bold mb-1 text-truncate" [title]="p.title">
+              {{ p.title }}
             </h6>
-            <p class="card-text small text-muted mb-2" style="font-size: 0.8rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">{{ p.description }}</p>
-            <div class="d-flex flex-wrap gap-1">
+            <div class="d-flex flex-wrap gap-1 mt-2">
               @for (g of p.genre; track g) {
-                <span class="badge" [ngClass]="colorBadge(g)">{{ g }}</span>
+                <span class="badge rounded-pill" [ngClass]="colorBadge(g)" style="font-size: 0.7rem;">{{ g }}</span>
               }
             </div>
           </div>
